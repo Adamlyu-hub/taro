@@ -194,7 +194,7 @@ export const UPDATE_PACKAGE_LIST = [
   '@tarojs/vite-runner',
   '@tarojs/create-app',
   '@tarojs/cli-convertor',
-  '@tarojs/transformer-wx',
+  '@tarojs/transformer-wx'
 ]
 
 export enum META_TYPE {
