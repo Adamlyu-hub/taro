@@ -66,7 +66,11 @@ export function cloneNode (this: TaroNode, isDeep = false) {
   }
 
   if (isDeep) {
-    newNode.childNodes = this.childNodes.map(node => (node as any).cloneNode(true))
+    newNode.childNodes = this.childNodes.map(node => {
+      const child = (node as any).cloneNode(true)
+      child.parentNode = newNode
+      return child
+    })
   }
 
   if (this.nodeType === NodeType.ELEMENT_NODE) {
@@ -76,14 +80,10 @@ export function cloneNode (this: TaroNode, isDeep = false) {
   return newNode
 }
 
-export function contains (this: TaroNode, node: TaroNode & { id?: string }): boolean {
-  let isContains = false
-  this.childNodes.some(childNode => {
-    const { uid } = childNode
-    if (uid === node.uid || uid === node.id || (childNode as any).contains(node)) {
-      isContains = true
-      return true
-    }
-  })
-  return isContains
+export function contains (this: TaroNode, node: TaroNode | null): boolean {
+  while (node) {
+    if (node === this) return true
+    node = node.parentNode
+  }
+  return false
 }
